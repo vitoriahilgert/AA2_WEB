@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Detalhes da Sessão</title>
+    <title th:text="#{session.details.title}"></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <style>
@@ -105,9 +105,9 @@
 <div class="page-container">
     <div class="page-header">
         <!-- O título da página agora é dinâmico com th:text -->
-        <h1>Detalhes da Sessão</h1>
+        <h1 th:text="#{session.details.title}"></h1>
         <!-- O link de voltar usa a sintaxe de URL do Thymeleaf -->
-        <a th:href="@{/sessions}" class="back-link">Voltar para Lista</a>
+        <a th:href="@{/sessions}" class="back-link" th:text="#{session.details.return}"></a>
     </div>
 
     <!-- Mensagens de sucesso/erro (flash attributes) -->
@@ -117,34 +117,34 @@
     <!-- Estrutura principal com th:if/th:unless -->
     <div th:if="${sessao != null}">
         <div class="detail-card">
-            <h2>Informações da Sessão</h2>
-            <p><strong>ID da Sessão:</strong> <span th:text="${sessao.id}"></span></p>
-            <p><strong>Nome do Projeto:</strong> <span th:text="${sessao.projectName}"></span></p>
+            <h2 th:text="#{session.details.info}"></h2>
+            <p><strong th:text="#{session.details.ID}"></strong> <span th:text="${sessao.id}"></span></p>
+            <p><strong th:text="#{session.details.project}"></strong> <span th:text="${sessao.projectName}"></span></p>
             <p><strong>Status:</strong>
                 <span class="status"
                       th:classappend="${'status-' + #strings.toLowerCase(sessao.status.name())}"
                       th:text="${sessao.status.name()}">
                 </span>
             </p>
-            <p><strong>Duração Planejada:</strong> <span th:text="${sessao.duration} + ' minutos'"></span></p>
-            <p><strong>Descrição/Objetivos:</strong> <span th:text="${sessao.description}"></span></p>
-            <p><strong>Data de Criação:</strong>
+            <p><strong th:text="#{session.details.time}"></strong> <span th:text="${sessao.duration} + ' minutos'"></span></p>
+            <p><strong th:text="#{session.details.description}"></strong> <span th:text="${sessao.description}"></span></p>
+            <p><strong th:text="#{session.details.date}"></strong>
                 <span th:text="${#temporals.format(sessao.creationDateTime, 'dd/MM/yyyy HH:mm:ss')}"></span>
             </p>
-            <p><strong>Data/Hora Início:</strong>
+            <p><strong th:text="#{session.details.start}"></strong>
                 <span th:if="${sessao.startDateTime != null}" th:text="${#temporals.format(sessao.startDateTime, 'dd/MM/yyyy HH:mm:ss')}"></span>
-                <span th:unless="${sessao.startDateTime != null}" class="status-PENDENTE">Pendente</span>
+                <span th:unless="${sessao.startDateTime != null}" class="status-PENDENTE" th:text="#{session.details.pending}"></span>
             </p>
-            <p><strong>Data/Hora Fim:</strong>
+            <p><strong th:text="#{session.details.end}"></strong>
                 <span th:if="${sessao.finishDateTime != null}" th:text="${#temporals.format(sessao.finishDateTime, 'dd/MM/yyyy HH:mm:ss')}"></span>
-                <span th:unless="${sessao.finishDateTime != null}" class="status-PENDENTE">Pendente</span>
+                <span th:unless="${sessao.finishDateTime != null}" class="status-PENDENTE" th:text="#{session.details.pending}"></span>
             </p>
         </div>
 
         <!-- Detalhes da Estratégia -->
         <div th:if="${sessao.strategyName != null}" class="detail-card">
-            <h2>Detalhes da Estratégia Associada</h2>
-            <p><strong>Nome:</strong> <span th:text="${sessao.strategyName}"></span></p>
+            <h2 th:text="#{session.details.strategy}"></h2>
+            <p><strong th:text="#{session.details.name}"></strong> <span th:text="${sessao.strategyName}"></span></p>
             <!-- Você precisará adicionar esses campos ao seu DTO se quiser exibi-los aqui -->
             <!-- <p><strong>Descrição:</strong> <span th:text="${sessao.strategyDescription}"></span></p> -->
             <!-- <p><strong>Dicas:</strong> <span th:text="${sessao.strategyTips}"></span></p> -->
@@ -153,49 +153,45 @@
 
         <!-- Bugs relatados -->
         <div class="detail-card">
-            <h2>Bugs Relatados</h2>
+            <h2 th:text="#{session.details.bug}"></h2>
 
             <form th:if="${sessao.status.name() == 'IN_PROGRESS' && (user.id == sessao.testerId || role == 'ADMIN')}" id="formBug" th:action="@{/sessions/atualizar-bugs}" method="post">
                 <input type="hidden" id="id" name="id" th:value="${sessao.id}">
 
-                <label for="new_bug">Descreva o novo bug:</label>
+                <label for="new_bug" th:text="#{session.details.newBug}"></label>
                 <textarea id="new_bug" name="new_bug" required>Bug: </textarea>
 
-                <button type="submit" class="button-bug">
-                    Adicionar Bug
-                </button>
+                <button type="submit" class="button-bug" th:text="#{session.details.addBug}"></button>
             </form>
 
-            <p th:if="${sessao.bugs == null || sessao.bugs == ''}">
-                Nenhum bug relatado!
-            </p>
+            <p th:if="${sessao.bugs == null || sessao.bugs == ''}" th:text="#{session.details.bug.empty}"></p>
 
             <div th:if="${sessao.bugs != null && sessao.bugs != ''}" class="current-description">
-                <strong>Bugs Relatados:</strong>
+                <strong th:text="#{session.details.bug.reported}"></strong>
                 <span th:text="${sessao.bugs}"></span>
             </div>
         </div>
 
         <!-- Seção de Ações Condicionais -->
         <div class="detail-card actions-section">
-            <h2>Ações da Sessão</h2>
+            <h2 th:text="#{session.details.actions}"></h2>
             <div th:switch="${sessao.status.name()}">
                 <div th:case="'CREATED'">
                     <!-- Formulário para o botão Iniciar -->
                     <form th:action="@{/sessions/atualizar-status}" method="post" style="display:inline;">
                         <input type="hidden" name="id" th:value="${sessao.id}" />
-                        <button type="submit" class="button-action start-button">Iniciar Sessão</button>
+                        <button type="submit" class="button-action start-button" th:text="#{session.details.begin}"></button>
                     </form>
                 </div>
                 <div th:case="'IN_PROGRESS'">
                     <!-- Formulário para o botão Finalizar -->
                     <form th:action="@{/sessions/atualizar-status}" method="post" style="display:inline;">
                         <input type="hidden" name="id" th:value="${sessao.id}" />
-                        <button type="submit" class="button-action finalize-button">Finalizar Sessão</button>
+                        <button type="submit" class="button-action finalize-button" th:text="#{session.details.finish}"></button>
                     </form>
                 </div>
                 <div th:case="'FINISHED'">
-                    <p class="disabled-text">Esta sessão foi finalizada e não pode mais ser modificada.</p>
+                    <p class="disabled-text" th:text="#{session.details.completed}"></p>
                 </div>
                 <div th:case="*">
                     <p class="disabled-text" th:text="|Nenhuma ação disponível para o status '${sessao.status.name()}'|"></p>
@@ -206,12 +202,12 @@
     </div>
     <div th:unless="${sessao != null}">
         <div class="detail-card">
-            <p>Sessão de teste não encontrada ou você não tem permissão para visualizá-la.</p>
+            <p th:text="#{session.details.notFound}"></p>
         </div>
     </div>
 
     <div class="footer-navigation">
-        <a th:href="@{/home}">Voltar para Painel Principal</a>
+        <a th:href="@{/home}" th:text="#{session.details.return.home}"></a>
     </div>
 </div>
 </body>
