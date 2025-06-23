@@ -252,7 +252,7 @@
 <div class="container">
     <div class="header">
         <form th:action="@{/home}" method="get" style="display: inline;">
-            <button type="submit" class="btn-create" th:title="#{strategy.back} th:text="#{strategy.back}"></button>
+            <button type="submit" class="btn-create" th:title="#{strategy.back}" th:text="#{strategy.back}"></button>
         </form>
 
         <h1 th:text="#{strategy.page.strat}"></h1>
@@ -301,7 +301,6 @@
                         title="Ver Imagens">
                     <i class="fas fa-images"></i>
                 </button>
-                <span th:if="${strategy.images.empty}" style="color: #666;">-</span>
             </td>
 
             <td sec:authorize="hasRole('ADMIN')" class="action-buttons">
