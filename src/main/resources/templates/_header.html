@@ -1,54 +1,67 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 </head>
 <body>
-
 <header th:fragment="headerContent(user)">
     <div th:if="${user != null}">
-        <div th:switch="${#strings.trim(user.role).toUpperCase()}">
-            <div th:case="'ADMIN'" class="page-header">
-                <div class="logo-title">
-                    <h1 th:text="#{header.admin.title}"></h1>
-                    <p th:text="#{header.admin.subtitle}"></p>
+        <div class="page-header">
+            <div class="logo-title">
+                <div th:switch="${#strings.trim(user.role).toUpperCase()}">
+                    <h1 th:case="'ADMIN'">Painel Administrativo</h1>
+                    <h1 th:case="'TESTER'">Painel do Testador</h1>
                 </div>
-                <div class="user-info">
-                    <span th:text="${'Olá, ' + user.name + '!'}">Olá, <strong><span th:text="${user.name}"></span></strong>!</span>
-                    <form th:action="@{/logout}" method="post" style="display: inline; margin-left: 20px;">
-                        <button type="submit" class="logout-button" th:text="#{logout.button}"></button>
-                    </form>
-                </div>
+                <p>GameTests Management Suite</p>
             </div>
+            <div class="user-info">
+                <div class="lang-selector">
+                    <ul>
+                        <li>
+                            <a th:href="@{''(lang='pt')}" th:classappend="${#locale.language == 'pt' ? 'active' : ''}">
+                                <img th:src="@{/images/br.png}" alt="Português">
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href="@{''(lang='en')}" th:classappend="${#locale.language == 'en' ? 'active' : ''}">
+                                <img th:src="@{/images/us.png}" alt="English">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <span th:text="${'Olá, ' + user.name + '!'}" style="margin-left: 10px"></span>
 
-            <div th:case="'TESTER'" class="page-header">
-                <div class="logo-title">
-                    <h1 th:text="#{header.tester.title}"</h1>
-                    <p th:text="#{header.tester.subtitle}"></p>
-                </div>
-                <div class="user-info">
-                    <span th:text="${'Olá, ' + user.name + '!'}">Olá, <strong><span th:text="${user.name}"></span></strong>!</span>
-                    <form th:action="@{/logout}" method="post" style="display: inline; margin-left: 20px;">
-                        <button type="submit" th:text="#{logout.button}"></button>
-                    </form>
-                </div>
+                <form th:action="@{/logout}" method="post" style="display: inline; margin-left: 5px;">
+                    <button type="submit" class="logout-button">Sair</button>
+                </form>
             </div>
-
         </div>
     </div>
-
     <div th:unless="${user != null}" class="page-header public-header">
         <div class="logo-title">
-            <h1 th:text="#{header.title}">GameTests Plataform</h1>
-            <p th:text="#{header.subtitle}">Sistema de Gerenciamento de Testes</p>
+            <h1>GameTests Plataform</h1>
+            <p>Sistema de Gerenciamento de Testes</p>
         </div>
         <div class="user-info">
-            <form th:action="@{/login}" method="get">
+            <div class="lang-selector">
+                <ul>
+                    <li>
+                        <a th:href="@{''(lang='pt')}" th:classappend="${#locale.language == 'pt' ? 'active' : ''}">
+                            <img th:src="@{/images/br.png}" alt="Português">
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{''(lang='en')}" th:classappend="${#locale.language == 'en' ? 'active' : ''}">
+                            <img th:src="@{/images/us.png}" alt="English">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <form th:action="@{/login}" method="get" style="margin-left: 5px;">
                 <button type="submit">Login</button>
             </form>
         </div>
     </div>
 </header>
 
-</body>
-</html>
