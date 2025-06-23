@@ -10,10 +10,10 @@
         <div class="page-header">
             <div class="logo-title">
                 <div th:switch="${#strings.trim(user.role).toUpperCase()}">
-                    <h1 th:case="'ADMIN'">Painel Administrativo</h1>
-                    <h1 th:case="'TESTER'">Painel do Testador</h1>
+                    <h1 th:case="'ADMIN'" th:text="#{header.admin.title}"></h1>
+                    <h1 th:case="'TESTER'" th:text="#{header.tester.title}"></h1>
                 </div>
-                <p>GameTests Management Suite</p>
+                <p th:text="#{header.admin.subtitle}">></p>
             </div>
             <div class="user-info">
                 <div class="lang-selector">
@@ -33,15 +33,15 @@
                 <span th:text="${'Olá, ' + user.name + '!'}" style="margin-left: 10px"></span>
 
                 <form th:action="@{/logout}" method="post" style="display: inline; margin-left: 5px;">
-                    <button type="submit" class="logout-button">Sair</button>
+                    <button type="submit" class="logout-button" th:text="#{logout.button}"></button>
                 </form>
             </div>
         </div>
     </div>
     <div th:unless="${user != null}" class="page-header public-header">
         <div class="logo-title">
-            <h1>GameTests Plataform</h1>
-            <p>Sistema de Gerenciamento de Testes</p>
+            <h1 th:text="#{header.title}">GameTests Plataform</h1>
+            <p th:text="#{header.subtitle}">Sistema de Gerenciamento de Testes</p>
         </div>
         <div class="user-info">
             <div class="lang-selector">
