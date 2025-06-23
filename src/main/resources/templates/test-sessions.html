@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
     <title th:text="#{session.page.title}"></title>
     <style>
         body {
@@ -283,15 +284,9 @@
     </style>
 </head>
 <body>
-<!-- HEADER DA PÁGINA -->
-<header class="page-header">
-    <div class="logo-title">
-        <h1 th:text="#{session.page.subtitle}"></h1>
-        <p th:text="#{session.page.description}"></p>
-    </div>
-    <div class="user-info">
-        <a th:href="@{/logout}" th:text="#{logout.button}"></a>
-    </div>
+
+<header>
+    <div th:replace="_header :: headerContent(user=${user})"></div>
 </header>
 
 <!-- CONTAINER PRINCIPAL -->
