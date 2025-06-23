@@ -249,7 +249,7 @@
 <div class="container">
     <h1 th:text="#{session.page.all}"></h1>
     <div>
-        <button onclick="abrirModalCadastro()" th:text="#{session.page.add}"></button>
+        <button onclick="abrirModalCadastro(this)" th:text="#{session.page.add}" th:attr="data-register-title=#{session.modal.register}"></button>
     </div>
 
     <!-- TABELA DE SESSÕES -->
@@ -278,7 +278,11 @@
                         th:attr="data-strategy-name=${sessao.strategyName},
                         data-strategy-description=${sessao.strategyDescription},
                         data-strategy-examples=${sessao.strategyExamples},
-                        data-strategy-tips=${sessao.strategyTips}"
+                        data-strategy-tips=${sessao.strategyTips},
+                        data-name-empty=#{session.name.empty},
+                        data-description-empty=#{session.description.empty},
+                        data-examples-empty=#{session.examples.empty},
+                        data-tips-empty=#{session.tips.empty}"
                         onclick="abrirModalEstrategia(this)"
                         th:title="#{session.info}"
                         class="btn-action"
@@ -313,8 +317,8 @@
                             data-session-duration=${sessao.duration},
                            data-session-description=${sessao.description},
                            data-session-strategyId=${sessao.strategyId},
-                           data-session-projectId=${sessao.projectId}
-                            "
+                           data-session-projectId=${sessao.projectId},
+                           data-edit-title=#{session.modal.edit}"
                             onclick="abrirModalEditar(this)"
                             th:title="#{session.edit}"
                             class="btn-action">
@@ -416,8 +420,10 @@
         document.getElementById(idModal).style.display = 'none';
     }
 
-    function abrirModalCadastro() {
-        document.getElementById('tituloModal').innerText = 'Nova Sessão de Teste';
+    function abrirModalCadastro(button) {
+        const tituloCadastro = button.getAttribute('data-register-title')
+
+        document.getElementById('tituloModal').innerText = tituloCadastro;
         const form = document.getElementById('formSessao');
         form.action = '/sessions/salvar';
         document.getElementById('formSessao').reset(); // Limpa o formulário
@@ -426,7 +432,8 @@
     }
 
     function abrirModalEditar(button) {
-        document.getElementById('tituloModal').innerText = 'Editar Sessão de Teste';
+        const editTitle = button.getAttribute('data-edit-title')
+        document.getElementById('tituloModal').innerText = editTitle;
 
         const form = document.getElementById('formSessao');
         form.action = '/sessions/atualizar';
@@ -457,11 +464,15 @@
         const description = button.getAttribute('data-strategy-description');
         const examples = button.getAttribute('data-strategy-examples');
         const tips = button.getAttribute('data-strategy-tips');
+        const emptyName = button.getAttribute('data-name-empty')
+        const emptyDesc = button.getAttribute('data-description-empty')
+        const emptyExample = button.getAttribute('data-examples-empty')
+        const emptyTips = button.getAttribute('data-tips-empty')
 
-        document.getElementById('estrategiaNomeModal').innerText = name || "Estratégia não definida";
-        document.getElementById('estrategiaDescricaoModal').innerText = description || "Nenhuma descrição disponível.";
-        document.getElementById('estrategiaExemplosModal').innerText = examples || "Nenhum exemplo disponível.";
-        document.getElementById('estrategiaDicasModal').innerText = tips || "Nenhuma dica disponível.";
+        document.getElementById('estrategiaNomeModal').innerText = name || emptyName;
+        document.getElementById('estrategiaDescricaoModal').innerText = description || emptyDesc;
+        document.getElementById('estrategiaExemplosModal').innerText = examples || emptyExample;
+        document.getElementById('estrategiaDicasModal').innerText = tips || emptyTips;
 
         document.getElementById('modalEstrategia').style.display = 'block';
     }

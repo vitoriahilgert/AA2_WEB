@@ -305,7 +305,7 @@
             </td>
 
             <td sec:authorize="hasRole('ADMIN')" class="action-buttons">
-                <form th:action="@{/strategies/delete}" method="post" style="display: inline;" onsubmit="return confirm('text');">
+                <form th:action="@{/strategies/delete}" method="post" style="display: inline;" onsubmit="return confirm(['Deseja realmente excluir esta estratégia?'];">
                     <input type="hidden" name="id" th:value="${strategy.id}" />
                     <button type="submit" class="btn-delete" th:title="#{strategy.table.delete}">
                         <i class="fas fa-trash"></i>
